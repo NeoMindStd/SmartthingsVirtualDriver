@@ -9,5 +9,5 @@ components:
     categories:
       - name: Humidifier
 metadata:
-  vid: evaporative-humidifier-v1
+  vid: mode-presentation
   mnmn: SmartThingsCommunity

@@ -4,35 +4,6 @@ local capabilities = require "st.capabilities"
 local Driver = require "st.driver"
 local log = require "log"
 
--- Custom capabilities for modes
-local mode_capability = capabilities["custom.humidifierMode"] or capabilities.build_capability("custom.humidifierMode", {
-  name = "Humidifier Mode",
-  capability_type = "standard",
-  attributes = {
-    mode = {
-      schema = {
-        type = "string",
-        enum = {"level1", "level2", "level3", "level4", "sleep", "target", "auto"}
-      },
-      required = true
-    }
-  },
-  commands = {
-    setMode = {
-      name = "setMode",
-      arguments = {
-        {
-          name = "mode",
-          schema = {
-            type = "string",
-            enum = {"level1", "level2", "level3", "level4", "sleep", "target", "auto"}
-          }
-        }
-      }
-    }
-  }
-})
-
 -- Command handlers
 local command_handlers = {}
 
@@ -49,21 +20,23 @@ end
 function command_handlers.set_mode(driver, device, command)
   local mode = command.args.mode
   log.info(string.format("Setting humidifier mode to %s", mode))
-  device:emit_event(mode_capability.mode({value = mode}))
+  
+  -- emit_event에 프레젠테이션 values와 일치하는 값 전달
+  device:emit_event(capabilities.mode.mode({ value = mode }))
 end
 
--- Lifecycle handlers
 local function device_added(driver, device)
   log.info(string.format("Device %s added", device.id))
   device:emit_event(capabilities.switch.switch.off())
-  device:emit_event(mode_capability.mode({value = "auto"}))
+  -- 초기 모드 설정
+  device:emit_event(capabilities.mode.mode({ value = "자동" }))
 end
 
 local function device_init(driver, device)
   log.info(string.format("Initializing device %s", device.id))
   device:online()
   device:emit_event(capabilities.switch.switch.off())
-  device:emit_event(mode_capability.mode({value = "auto"}))
+  device:emit_event(capabilities.mode.mode({ value = "자동" }))
 end
 
 local function device_removed(driver, device)
@@ -77,7 +50,7 @@ local function handle_discovery(driver, should_continue)
     type = "LAN",
     device_network_id = "virtual_humidifier",
     label = "Virtual Humidifier",
-    profile = "virtual-humidifier.v1",
+    profile = "evaporative-humidifier.v1",
     manufacturer = "Virtual Manufacturer",
     model = "VirtualHumidifier",
     vendor_provided_label = "Virtual Humidifier"
@@ -99,8 +72,8 @@ local virtual_humidifier_driver = Driver("VirtualHumidifier", {
       [capabilities.switch.commands.on.NAME] = command_handlers.switch_on,
       [capabilities.switch.commands.off.NAME] = command_handlers.switch_off,
     },
-    [mode_capability.ID] = {
-      ["setMode"] = command_handlers.set_mode
+    [capabilities.mode.ID] = {
+      [capabilities.mode.commands.setMode.NAME] = command_handlers.set_mode
     }
   }
 })

@@ -1,0 +1,18 @@
+id: mode-presentation
+version: 1
+components:
+  - id: main
+    capabilities:
+      - id: mode
+        version: 1
+        values:
+          - value: "1단계"
+          - value: "2단계"
+          - value: "3단계"
+          - value: "4단계"
+          - value: "수면"
+          - value: "목표 습도"
+          - value: "자동"
+metadata:
+  vid: evaporative-humidifier-v1
+  mnmn: SmartThingsCommunity
