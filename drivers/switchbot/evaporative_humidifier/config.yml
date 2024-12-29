@@ -4,7 +4,7 @@ profiles:
   - id: evaporative-humidifier.v1
     name: Evaporative Humidifier
 permissions:
-  - location
+  discovery: {}
 metadata:
   vid: evaporative-humidifier-v1
   mnmn: SmartThingsCommunity
