@@ -1,0 +1,10 @@
+id: mode
+version: 1
+components:
+  - id: main
+    capabilities:
+      - id: mode
+        version: 1
+metadata:
+  vid: mode-presentation-v1
+  mnmn: SmartThingsCommunity

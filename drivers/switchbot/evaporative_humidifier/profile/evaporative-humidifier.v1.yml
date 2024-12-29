@@ -1,0 +1,13 @@
+name: evaporative-humidifier.v1
+components:
+  - id: main
+    capabilities:
+      - id: switch
+        version: 1
+      - id: mode
+        version: 1
+    categories:
+      - name: Humidifier
+metadata:
+  vid: evaporative-humidifier-v1
+  mnmn: SmartThingsCommunity
